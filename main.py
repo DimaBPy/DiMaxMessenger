@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title='DiMax', version='0.0.1')
 
 
 @app.get("/")
