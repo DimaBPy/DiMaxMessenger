@@ -4,9 +4,7 @@ from fastapi import FastAPI, Request
 from loguru import logger
 from starlette.responses import JSONResponse
 
-logger.add("info.log",
-           format="Log: [{extra[log_id]}:{time} - {level} - {message}]",
-           level="INFO", enqueue=True)
+logger.add("info.log", level="INFO")
 app = FastAPI(title='DiMax', version='0.0.1')
 
 
