@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from fastapi import FastAPI, Request
 from loguru import logger
 from starlette.responses import JSONResponse
@@ -10,8 +8,7 @@ app = FastAPI(title='DiMax', version='0.0.1')
 
 @app.middleware("http")
 async def log_middleware(request: Request, call_next):
-    log_id = str(uuid4())
-    with logger.contextualize(log_id=log_id):
+    with logger.contextualize():
         try:
             response = await call_next(request)
             if response.status_code in [401, 402, 403, 404]:
