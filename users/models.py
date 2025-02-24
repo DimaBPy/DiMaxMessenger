@@ -1,11 +1,12 @@
-import datetime
+from time import tzset
 
 from sqlalchemy import (Column, Integer, String, Boolean, DateTime, ForeignKey,
-                        SmallInteger)
-from sqlalchemy.orm import relationship
+                        SmallInteger, func)
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import relationship, DeclarativeBase
 from sqlalchemy.schema import CreateTable
 
-from db import Base
+from database.db import Base
 
 
 class User(Base):
@@ -13,13 +14,13 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=True,
+                   default=None)
     hashed_password = Column(String)
-    timestamp = Column(DateTime,
-                       default=datetime.datetime.now(tz=datetime.timezone.utc))
-    user_ip = Column(String)
-    user_client = Column(String)
-    is_active = Column(Boolean, default=True)
+    timestamp = Column(DateTime, server_default=func.now())
+    user_ip = Column(String, default=None)
+    user_client = Column(String, nullable=True)
+    is_active = Column(Boolean, default=False)
     is_superuser = Column(Boolean, default=False)
     is_verified = Column(Boolean, default=False)
 
@@ -41,8 +42,7 @@ class Message(Base):
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String)
     user_id = Column(Integer, ForeignKey('users.id'))
-    timestamp = Column(DateTime,
-                       default=datetime.datetime.now(tz=datetime.timezone.utc))
+    timestamp = Column(DateTime, server_default=func.now())
     to_user = Column(SmallInteger)
     from_user = Column(SmallInteger)
     is_read = Column(Boolean, default=False)

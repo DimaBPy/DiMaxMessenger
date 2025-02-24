@@ -1,0 +1,8 @@
+
+In same name file must be your sensitive data!
+
+for example:
+    DB_USER=username
+    DB_PASSWORD=password
+    DB_HOST=127.0.0.1
+    DB_PORT=5432
